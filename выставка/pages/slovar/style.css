@@ -1,0 +1,211 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+ }
+
+ body {
+     background-color: #000000;
+     color: #f5f5f5;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     min-height: 100vh;
+ }
+
+ .chat-container {
+     width: 100%;
+     max-width: 500px;
+     height: 100vh;
+     overflow: hidden;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+     display: flex;
+     flex-direction: column;
+     background-image: url(./img/bg.png);
+     background-repeat: no-repeat;
+     background-size: cover;
+     background-position: center;
+ }
+
+
+
+ /* Область сообщений */
+ .chat-messages {
+     background: transparent;
+     flex: 1;
+     padding: 20px;
+     overflow-y: auto;
+     display: flex;
+     flex-direction: column;
+     gap: 15px;
+     /* background-color: #0c0c0c; */
+ }
+
+ /* Стили для скроллбара */
+ .chat-messages::-webkit-scrollbar {
+     width: 6px;
+ }
+
+ .chat-messages::-webkit-scrollbar-track {
+     background: rgba(255, 255, 255, 0.05);
+     border-radius: 10px;
+ }
+
+ .chat-messages::-webkit-scrollbar-thumb {
+     background: linear-gradient(135deg, #8e8e8e 0%, #6f6f6f 100%);
+     border-radius: 10px;
+ }
+
+ /* Сообщения */
+ .message {
+     max-width: 80%;
+     padding: 12px 16px;
+     border-radius: 18px;
+     line-height: 1.4;
+     position: relative;
+     animation: fadeIn 0.3s ease-out;
+ }
+
+ @keyframes fadeIn {
+     from {
+         opacity: 0;
+         transform: translateY(10px);
+     }
+
+     to {
+         opacity: 1;
+         transform: translateY(0);
+     }
+ }
+
+ /* Сообщения от бота */
+ .bot-message {
+     align-self: flex-start;
+     background: linear-gradient(135deg, #4FB608 0%, #A6F734 100%);
+     box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.5),
+         inset 0px 0px 6px rgba(255, 255, 255, 0.9);
+     border-bottom-left-radius: 5px;
+     color: #000;
+ }
+
+ /* Сообщения от пользователя */
+ .user-message {
+     align-self: flex-end;
+     background: linear-gradient(135deg, #FCF3F3 0%, #D4ECFF 100%);
+     box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.5),
+         inset 0px 0px 6px rgba(255, 255, 255, 0.9);
+     color: #000;
+     border-bottom-right-radius: 5px;
+ }
+
+ /* Метка времени */
+ .message-time {
+     font-size: 0.7rem;
+     opacity: 0.6;
+     margin-top: 5px;
+     text-align: right;
+ }
+
+ /* Панель ввода */
+ .input-area {
+     margin: 10px 20px;
+     padding: 5px 5px;
+     background: linear-gradient(180deg, #FCF3F3 0%, #D4ECFF 100%);
+     border-top: 1px solid #333;
+     border-radius: 25px;
+     display: flex;
+     gap: 10px;
+ }
+
+ .input-area input {
+     flex: 1;
+     min-width: 0;
+     padding: 5px 10px;
+     border: none;
+     border-radius: 25px;
+     background-color: transparent;
+     color: #000;
+     font-size: 1rem;
+     outline: none;
+ }
+
+ .input-area input::placeholder {
+     color: #000;
+ }
+
+ .input-area button {
+     padding: 12px 24px;
+     border-radius: 20px;
+     border: none;
+     background: linear-gradient(135deg, #4FB608 0%, #A6F734 100%);
+     color: #000;
+     font-size: 1rem;
+     font-weight: 600;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: all 0.2s;
+     box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.5),
+         inset 0px 0px 10px rgba(255, 255, 255, 0.9);
+     white-space: nowrap;
+     flex-shrink: 0;
+     margin: auto 5px;
+ }
+
+ .input-area button:hover,
+ .input-area button:active {
+     transform: scale(1.05);
+
+ }
+
+ /* Цветные блоки для визуального оформления */
+ .color-block {
+     width: 100%;
+     height: 10px;
+     margin: 10px 0;
+     border-radius: 5px;
+ }
+
+ .color-block.blue {
+     background: linear-gradient(90deg, #2575fc, #6a11cb);
+ }
+
+ .color-block.purple {
+     background: linear-gradient(90deg, #8a2be2, #da70d6);
+ }
+
+ .color-block.green {
+     background: linear-gradient(90deg, #00b09b, #96c93d);
+ }
+
+ /* Подсказка */
+ .hint {
+     text-align: center;
+     font-size: 0.8rem;
+     color: #ffffff;
+     padding: 10px;
+     font-weight: 500;
+     margin-top: 10px;
+     text-shadow: -0.5px -0.5px 0 #000,
+    0.5px -0.5px 0 #000,
+    -0.5px 0.5px 0 #000,
+    0.5px 0.5px 0 #000;
+ }
+
+ /* Адаптивность */
+ @media (max-width: 600px) {
+     .chat-container {
+         height: 100vh;
+         max-width: 100%;
+     }
+
+     .chat-header h1 {
+         font-size: 1.3rem;
+     }
+
+     .message {
+         max-width: 90%;
+     }
+ }

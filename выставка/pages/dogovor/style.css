@@ -1,0 +1,389 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --before-display: none;
+}
+
+body {
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    background: #303030;
+    padding: 20px; 
+    font-family: 'Times New Roman', Times, serif;
+}
+
+input::placeholder, textarea::placeholder { color: black;
+font-size: 14px; }
+
+.dogovor {
+    padding: 5%;
+    width: 100%;
+    max-width: 800px; 
+    background: #fff;
+    height: 100vh;
+    
+    
+}
+
+.dogovor__container {
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.dogovor-text,
+.podpis-text {
+    margin-top: 15px;
+    line-height: 1.5;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.dogovor-text input,
+.podpis-text input {
+    border: none;
+    border-bottom: 1px solid #000;
+    padding: 2px 16px;
+    box-sizing: border-box;
+    max-width: 400px;
+    
+    font-size: 14px;
+    background: transparent;
+    
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.dogovor-text input{
+    min-width: 250px;
+}
+
+.dogovor-text input:focus,
+.podpis-text input:focus {
+    outline: none;
+}
+
+
+.problem {
+    width: 98%;
+    max-width: 100%;
+    padding: 2px 16px;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    appearance: none;
+    background: transparent;
+    background: linear-gradient(to bottom, 
+    transparent calc(100% - 1px),
+    #000000 calc(100% - 1px),
+    #000000 100%
+  );
+  background-size: 100% 1.5em; /* Высота строки */
+  line-height: 1.5em;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 14px;
+}
+
+
+.bold {
+    font-weight: bold;
+}
+
+.podpis__container {
+    text-align: end;/* Изменил на left для мобильных */
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+button {
+    position: relative;
+    cursor: pointer;
+    color: #000;
+    font-size: 14px;
+    padding: 2px 16px;
+    border: none;
+    border-bottom: 1px solid #000;
+    display: inline-block;
+    margin-top: 5px;
+    background: transparent;
+    transition: .3s;
+}
+
+button::before {
+    
+    display: var(--before-display);
+    content: "";
+    background-image: url(shtamp.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 5;
+    transition: .3s;
+    width: 7vw; 
+    height: 7vw;
+    max-width: 200px; 
+    position: absolute;
+    top: -35px;
+    left: 0;
+    right: 0;
+    margin: 0 auto 10px; 
+    opacity: 0.7;
+    rotate: 30deg;
+}
+
+
+/* 
+Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .signature-image {
+        width: 70%; /* На мобильных делаем чуть больше */
+        max-width: 150px;
+        top: -5px;
+    }
+    button::before {
+    width: 17vw; 
+    height: 17vw;
+    max-width: 200px; 
+    position: absolute;
+    top: -25px;
+    left: 0;
+    right: 0;
+    margin: 0 auto 10px; 
+    opacity: 0.7;
+    rotate: 30deg;
+}
+}
+
+@media (max-width: 480px) {
+    .signature-image {
+        width: 80%;
+        max-width: 120px;
+        top: -3px;
+    }
+
+    
+}
+
+/* Медиа-запросы для адаптивности */
+
+/* Планшеты (от 768px) */
+@media (min-width: 768px) and (max-width: 1200) {
+    body {
+        padding: 40px 20px;
+        align-items: center;
+    }
+    
+    .dogovor {
+        padding: 40px;
+        width: 85%;
+    }
+    
+    .dogovor-text input,
+    .podpis-text input {
+        max-width: 400px;
+    }
+
+    button::before {
+    width: 17vw; 
+    height: 17vw;
+    max-width: 200px; 
+    position: absolute;
+    top: -45px;
+    left: 0;
+    right: 0;
+    margin: 0 auto 10px; 
+    opacity: 0.7;
+    rotate: 30deg;
+    }
+}
+
+/* Ноутбуки и десктопы (от 992px) */
+@media (min-width: 992px) {
+    .dogovor {
+        width: 65%;
+        padding: 50px;
+    }
+    
+    .dogovor-text input,
+    .podpis-text input {
+        max-width: 500px;
+    }
+    
+    body {
+        font-size: 16px;
+    }
+    
+    .dogovor-text input,
+    .podpis-text input,
+    button {
+        font-size: 16px;
+    }
+}
+
+/* Большие экраны (от 1200px) */
+@media (min-width: 1200px) {
+    .dogovor {
+        width: 55%;
+    }
+}
+
+/* Мобильные телефоны (до 480px) */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .dogovor {
+        padding: 25px 20px;
+    }
+    
+    .dogovor-text,
+    .podpis-text {
+        margin-top: 12px;
+        font-size: 13px;
+    }
+    
+    .dogovor-text input,
+    .podpis-text input {
+        padding: 6px 4px;
+        font-size: 13px;
+        max-width: 100%;
+    }
+    
+    button {
+        font-size: 13px;
+        padding: 4px 6px;
+    }
+    
+    .dogovor__container {
+        margin-bottom: 20px;
+    }
+
+    button::before{
+        top: -5px;
+        width: 12vw;
+        height: 12vw;
+    }
+
+    button::before {
+    width: 17vw; 
+    height: 17vw;
+    max-width: 200px; 
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    margin: 0 auto 10px; 
+    opacity: 0.7;
+    rotate: 30deg;
+}
+
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+    .dogovor {
+        padding: 20px 15px;
+    }
+    
+    .dogovor-text,
+    .podpis-text {
+        font-size: 12px;
+    }
+    
+    .dogovor-text input,
+    .podpis-text input,
+    button {
+        font-size: 12px;
+    }
+}
+
+/* Горизонтальная ориентация на мобильных */
+@media (max-height: 600px) and (orientation: landscape) {
+    body {
+        
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    
+    .dogovor {
+        min-height: auto;
+        padding: 30px;
+    }
+}
+
+.result__text{
+    text-align: center;
+    margin-top: 15vh;
+    display: none;
+}
+
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal__content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: clamp(15px, 5vw, 30px);
+    border: 3px solid #000000;
+    width: min(90%, 400px);
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease;
+}
+
+.modal__text {
+    font-size: clamp(16px, 4vw, 18px);
+    margin-bottom: clamp(15px, 4vw, 25px);
+    text-align: center;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.modal__btn {
+    display: block;
+    margin: 0 auto;
+    padding: clamp(8px, 2vw, 12px) clamp(20px, 5vw, 35px);
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: clamp(4px, 1vw, 8px);
+    font-size: clamp(14px, 3.5vw, 16px);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal__btn:hover {
+    background-color: #272727;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
