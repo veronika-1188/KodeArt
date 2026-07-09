@@ -6,6 +6,9 @@
             margin: 0;
             min-height: 100vh;
         }
+        :root {
+    color-scheme: light only;
+}
 
         .second_text {
             color: black;

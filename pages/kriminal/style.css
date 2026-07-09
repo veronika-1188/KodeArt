@@ -21,6 +21,8 @@
     --color-yellow: #FED800;
     --color-white: #FBFBFB;
     --color-black: #000;
+
+    color-scheme: light only;
 }
 
 * {

@@ -19,6 +19,10 @@ body {
     overflow-y: auto;
 
 }
+
+:root {
+    color-scheme: light only;
+}
 .glitch-area .rectangle {
     position: absolute;
     background: rgb(0, 0, 0);

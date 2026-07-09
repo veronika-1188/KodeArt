@@ -9,6 +9,8 @@
     --grey: #7B9794;
     --orange: #EA8B37;
     --white: #F4F2F2;
+
+    color-scheme: light only;
 }
 
 body {

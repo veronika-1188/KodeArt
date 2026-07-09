@@ -6,6 +6,7 @@
 
 :root{
     --before-display: none;
+    color-scheme: light only;
 }
 
 body {
