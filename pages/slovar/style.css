@@ -11,13 +11,13 @@
      display: flex;
      justify-content: center;
      align-items: center;
-     min-height: 100vh;
+     height: 100vh;
  }
 
  .chat-container {
      width: 100%;
      max-width: 500px;
-     height: 100vh;
+     height: 95vh;
      overflow: hidden;
      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
      display: flex;
