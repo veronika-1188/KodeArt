@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleGlitch.css">
+    <title>Kriminal</title>
+</head>
+<body>
+    <header class="header">
+        <h2 class="header__title"><span class="bold">БОЛЬШИЕ</span><br>НОВОСТИ</h2>
+        <img src="logo.svg" alt="logo" class="logo">
+        <p class="header__text">день</p>
+        <p class="header__text">спорт</p>
+        <p class="header__text">искусство</p>
+    </header>
+    <main>
+        <div class="main__search">
+            <input class="search__input" type="search" name="search" id="search" placeholder="Искать...">
+            <button class="search__btn"><img src="search.svg" alt="search"></button>
+        </div>
+        <div class="main__bunner">
+            <h1 class="main__bunner__title cursive">СМЕРТЕЛЬНОЕ ИСКУССТВО</h1>
+            <p class="main__bunner__text bold">Закзала убийство собственного творения??? </p>
+        </div>
+        <div class="content1">
+            <p class="text">  В Екатеринбурге было совершено убийство. Неизвестная ранее работа Алисы М. найдена расчлененной.</p>
+            <img src="img1.jpg" class="kartina">
+            <p class="img-text">Изображение №1. Фото с места событий.</p>
+            <p class="text">  В сеть слили аудио, записанное в момент совершения преступления. На нем четко слышно, как сама художница дает таинственному киллеру задание уничтожить холст:
+            </p>
+            <p class="text bold">  «Мне без разницы, как ты это сделаешь - главное, чтобы этого не было»</p>
+            <audio controls src="voice.m4a" style="width:100%; margin-top: 10px;"></audio>
+            <p class="img-text">Звуковая дорожка №1. Аудиозапись с места событий.</p>
+            <p class="text">  Соучастника этого ужасного преступления найти не удалось. Убийца не оставил никаких следов и скрылся в неизвестном направлении.</p>
+            <img src="img2.jpg" class="kartina">
+            <p class="img-text">Изображение №2. Фото с места событий.</p>
+            <p class="text">  Сама Алиса М. не дает никаких показаний. Некоторые опрашиваемые утверждают, что художница давно испытывала негативные эмоции к этой картине, несколько раз наносила ей физические увечья и не желала, чтобы люди когда-либо увидели ее. Сторонние источники сообщают обратное: якобы Алиса питала нежные чувства к этому холсту, так как создавала его совместно с близкими людьми. </p>
+            <p class="text cursive">  О продолжении этого дела и других новостях читайте в телеграмм-канале:</p>
+            <a class="text" href="https://t.me/shtodelaetLisa">https://t.me/shtodelaetLisa</a>
+        </div>
+    </main>
+    <div class="modal">
+        <div class="modal-top">
+            <h3 class="modal__title">ERROR</h3>
+        </div>
+        <div class="modal__content">
+            <p class="modal__content-text">Че ты ищешь, поиск бутафорский</p>
+            <button class="modal__content-btn">OK</button>
+        </div>
+    </div>
+    <div class="glitch-area">
+        <div class="rectangle r1"></div>
+        <div class="rectangle r2"></div>
+        <div class="rectangle r3"></div>
+        <div class="rectangle r4"></div>
+        <div class="rectangle r5"></div>
+    </div>
+</div>
+</body>
+<script src="modalScript.js"></script>
+</html>

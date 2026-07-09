@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <title>Zmeika</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Змейка</h1>
+
+    <div id="game" class="game">
+      <!-- поле будет рисоваться программно -->
+    </div>
+
+    <div class="hud">
+      <div class="score">Длина: <span id="length">0</span></div>
+      <div class="status" id="status">Играйте!</div>
+      <button id="restartButton" class="restart-btn" aria-label="Перезапустить игру">⟳ Заново</button>
+    </div>
+
+    <!-- Геймпад (управление на мобильных) -->
+    <div class="pad" aria-label="Управление игрой">
+      <div class="pad-row">
+        <button class="btn" data-dir="up" aria-label="Вверх">▲</button>
+      </div>
+      <div class="pad-row">
+        <button class="btn" data-dir="left" aria-label="Влево">◄</button>
+        <button class="btn" data-dir="down" aria-label="Вниз">▼</button>
+        <button class="btn" data-dir="right" aria-label="Вправо">►</button>
+      </div>
+    </div>
+
+    <!-- Подсказка: версия для мобильной/десктопной вальдальности клавиатуры -->
+    <div class="hint">Управление: стрелками на клавиатуре (десктоп), свайпом/клавишами на мобильном.</div>
+  </div>
+  <!-- Модальное окно с инструкцией -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2 class="modal-title">Как играть?</h2>
+    <div class="modal-body">
+      <p><strong>Цель:</strong> уменьшить длину змейки до 2 сегментов.</p>
+      
+      <p><strong>Как играть:</strong></p>
+      <ul>
+        <li>Съев яблоко — змейка растёт на <b>+5</b> сегментов</li>
+        <li>Каждый ход без еды — змейка теряет <b>−2</b> сегмента</li>
+        <li>Столкновение со стеной или собой — проигрыш</li>
+      </ul>
+      
+      <p><strong>Управление:</strong></p>
+      <ul>
+        <li><b>Стрелки</b> — на клавиатуре</li>
+        <li><b>Кнопки ◄ ▲ ▼ ►</b> — на мобильном</li>
+      </ul>
+      
+    </div>
+    <button class="modal-btn" id="modalOkBtn">ОК!</button>
+  </div>
+</div>
+
+ <script src="script.js"></script>
+</body>
+
+</html>

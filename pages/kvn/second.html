@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vpn</title>
+    <link rel="stylesheet" href="secondStyle.css">
+</head>
+<body>
+    <div class="blur-overlay" id="blurOverlay"></div>
+    <p class="second_text">Мне запретили об этом говорить</p>
+
+    <script>
+        const overlay = document.getElementById('blurOverlay');
+        overlay.addEventListener('click', () => {
+            overlay.classList.add('hidden');
+            
+        });
+        document.addEventListener('keydown', (e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && !overlay.classList.contains('hidden')) {
+                overlay.classList.add('hidden');
+               
+            }
+        });
+    </script>
+</body>
+</html>
