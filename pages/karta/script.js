@@ -1,4 +1,3 @@
-
 const routeCard = document.getElementById('routeCard');
 const cardHeader = document.getElementById('cardHeader');
 const cardHeader2 = document.getElementById('cardHeader2');
@@ -15,29 +14,17 @@ document.querySelector('.start-btn').addEventListener('click', (e) => {
     window.location.href = 'second.html';
 });
 
-
+// ===== Переключение транспорта =====
 const transportBtns = document.querySelectorAll('.transport-btn');
-const promoBadge = document.querySelector('.promo-badge');
 
 transportBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         transportBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        const isScooterSelected = btn === transportBtns[0];
-
-        if (isScooterSelected) {
-            promoBadge.classList.add('hidden');
-        } else {
-            promoBadge.classList.remove('hidden');
-        }
     });
 });
 
-if (transportBtns[0].classList.contains('active')) {
-    promoBadge.classList.add('hidden');
-}
-
+// ===== Зум карты =====
 const mapContainer = document.getElementById('mapContainer');
 const mapWidget = document.getElementById('mapWidget');
 

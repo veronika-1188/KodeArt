@@ -90,14 +90,9 @@
       snake.push({r: p.r, c: p.c});
     }
 
-    // Улучшенный алгоритм выбора безопасного направления
     const head = snake[0];
-    
     const possibleDirs = [
-      {dr: 0, dc: 1},
-      {dr: 1, dc: 0},
-      {dr: 0, dc: -1},
-      {dr: -1, dc: 0}
+      {dr: 0, dc: 1}, {dr: 1, dc: 0}, {dr: 0, dc: -1}, {dr: -1, dc: 0}
     ];
     
     let safeDir = null;
@@ -183,50 +178,34 @@
     const nc = head.c + dir.dc;
 
     if (!isInside(nr,nc)) {
-      console.log('Столкновение со стеной!', {nr, nc, head, dir});
       endGame(false);
       return;
     }
     
     for (let i = 1; i < snake.length; i++) {
       if (snake[i].r === nr && snake[i].c === nc) {
-        console.log('Столкновение с собой!', {
-          новаяПозиция: {r: nr, c: nc},
-          сегмент: snake[i],
-          индекс: i
-        });
         endGame(false);
         return;
       }
     }
 
-    // Добавляем новую голову
     snake.unshift({r: nr, c: nc});
     
-    let ate = false;
     if (apple && nr === apple.r && nc === apple.c) {
-      ate = true;
       apple = null;
-      // При съедании яблока увеличиваем длину на 5
       for (let i = 0; i < 4; i++) {
         const tail = snake[snake.length - 1];
         snake.push({r: tail.r, c: tail.c});
       }
     } else {
-      // УДАЛЯЕМ ДВА СЕГМЕНТА ВМЕСТО ОДНОГО для уменьшения длины
-      if (snake.length > 1) {
-        snake.pop(); // Первый сегмент
-      }
-      if (snake.length > 1) {
-        snake.pop(); // Второй сегмент - змейка уменьшается
-      }
+      if (snake.length > 1) snake.pop();
+      if (snake.length > 1) snake.pop();
     }
 
     if (!apple) {
       apple = spawnApple();
     }
 
-    // Проверка победы: длина <= 2
     if (snake.length <= 2) {
       endGame(true);
       return;
@@ -260,21 +239,21 @@
 
   // Обработка клавиатуры
   window.addEventListener('keydown', (e) => {
-    // Блокировка управления до закрытия модалки
     if (modalOverlay && !modalOverlay.classList.contains('hidden')) return;
     if (!alive) return;
+    
     const key = e.key;
     let nd = null;
     if (key === 'ArrowUp') nd = {dr:-1, dc:0};
     else if (key === 'ArrowDown') nd = {dr:1, dc:0};
     else if (key === 'ArrowLeft') nd = {dr:0, dc:-1};
     else if (key === 'ArrowRight') nd = {dr:0, dc:1};
+    
     if (nd) {
       e.preventDefault();
       nextDir = nd;
     }
     
-    // Закрытие модалки по Escape
     if (e.key === 'Escape' && modalOverlay && !modalOverlay.classList.contains('hidden')) {
       startGame();
     }
@@ -283,7 +262,6 @@
   // Ввод через геймпад (мобильная кнопка)
   padButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Блокировка управления до закрытия модалки
       if (modalOverlay && !modalOverlay.classList.contains('hidden')) return;
       
       const d = btn.getAttribute('data-dir');
@@ -308,29 +286,24 @@
 
   // Инициализация поля и игры
   function init() {
+    // !!! ГЛАВНОЕ ИСПРАВЛЕНИЕ: разрешаем движение змейки при старте
+    alive = true;
+    won = false;
+    statusEl.textContent = 'Играйте!';
+    statusEl.style.color = '#fff';
+
     console.log('=== ИНИЦИАЛИЗАЦИЯ ИГРЫ ===');
     initGrid();
-    console.log('Сетка создана');
     
     initSnakePerimeter();
-    console.log('Змейка инициализирована:', {
-      длина: snake.length,
-      голова: snake[0],
-      хвост: snake[snake.length - 1],
-      направление: dir
-    });
-    
     apple = spawnApple();
-    console.log('Яблоко создано:', apple);
     
     updateGridVisual();
     lengthDisplay();
-    console.log('Визуализация обновлена');
 
     if (timer) clearInterval(timer);
     timer = setInterval(step, tickMs);
     console.log('Игра запущена! Таймер:', tickMs, 'мс');
-    console.log('========================');
   }
 
   // ===== Запуск игры только после нажатия "ОК" =====
