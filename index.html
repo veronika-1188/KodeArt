@@ -1,331 +1,335 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search</title>
-</head>
+    <style>
+        :root { color-scheme: light only; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        html, body { max-width: 100vw; font-family: Arial, sans-serif; background: #fff; color: #202124; }
+        a { text-decoration: none; color: #383838; }
+        a:hover { text-decoration: underline; }
 
+        /* Header */
+        .header { width: 100%; height: 10vh; display: flex; align-items: center; justify-content: flex-end; padding: 2% 4%; gap: 10px; }
+        .header_link { font-size: 14px; cursor: pointer; }
+        .header-icon { width: 36px; height: 36px; border-radius: 50%; background: #f8f9fa; color: #5f6368; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid #dadce0; transition: 0.2s; flex-shrink: 0; }
+        .header-icon:hover { background: #e8f0fe; color: #1a73e8; border-color: #1a73e8; }
+        .help-icon { font-size: 20px; font-weight: bold; }
+
+        /* Main */
+        main { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 0 16px; }
+        .logo { font-size: clamp(50px, 9vw, 100px); font-weight: 700; letter-spacing: -2px; margin-bottom: 20px; user-select: none; display: flex; align-items: baseline; }
+        .logo span { display: inline-block; transition: transform 0.3s ease; }
+        .logo span:hover { transform: translateY(-8px) scale(1.1); }
+
+        /* Search */
+        .search-box { width: 45vw; max-width: 600px; display: flex; align-items: center; border: 1px solid #ccc; border-radius: 24px; padding: 10px 16px; box-shadow: 0 1px 6px rgba(32,33,36,.28); position: relative; }
+        .search-box input { flex: 1; font-size: 16px; padding: 8px 0; background: transparent; border: none; }
+        .search-icon { width: 24px; height: 24px; fill: #6c6c6c; cursor: pointer; flex-shrink: 0; transition: fill 0.2s; }
+        .search-icon:hover { fill: #4285f4; }
+        .search-results { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc; border-radius: 8px; max-height: 300px; overflow-y: auto; display: none; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin-top: 4px; }
+        .result-item { padding: 12px 16px; cursor: pointer; font-size: 14px; }
+        .result-item:hover { background: #f0f0f0; }
+        .no-results { padding: 12px 16px; color: #999; font-size: 14px; }
+
+        .buttons { margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .button { padding: 10px 20px; font-size: 14px; border-radius: 4px; background: #f8f9fa; cursor: pointer; text-decoration: none; color: #383838; text-align: center; transition: background 0.2s; }
+        .button:hover { background: #e8e8e8; }
+
+        /* Modals Base */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 10000; opacity: 0; transition: opacity 0.3s; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal { background: #fff; border-radius: 16px; max-width: 500px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transform: scale(0.9); transition: transform 0.3s; position: relative; }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal-img img { width: 100%; display: block; border-radius: 16px 16px 0 0; }
+        .modal-header { display: flex; justify-content: center; align-items: center; padding: 20px 24px 10px; position: relative; }
+        .modal-header h2 { font-size: 24px; font-weight: 400; }
+        .modal-close-btn { position: absolute; right: 16px; top: 16px; background: none; border: none; font-size: 28px; color: #5f6368; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.2s; }
+        .modal-close-btn:hover { background: #f1f3f4; color: #202124; }
+        .modal-content { padding: 0 24px 24px; }
+        .modal-content h3 { font-size: 16px; margin-bottom: 12px; margin-top: 20px; font-weight: 500; line-height: 1.5; }
+        .modal-content h3:first-child { margin-top: 0; }
+        .modal-btn { width: calc(100% - 48px); padding: 12px; background: #1a73e8; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; margin: 0 24px 24px; transition: background 0.2s; }
+        .modal-btn:hover { background: #1557b0; }
+
+        /* Dark Weather Modal Overrides */
+        .weather-modal-dark { background: linear-gradient(to bottom left, #424a75, #232a4d); border: 1px solid rgba(255,255,255,0.1); }
+        .weather-modal-dark .modal-header h2, .weather-modal-dark .modal-content h3 { color: #e8eaed; }
+        .weather-modal-dark .modal-close-btn { color: #e8eaed; }
+        .weather-modal-dark .modal-close-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        
+        /* Weather Wheel */
+        .weather-wheel { position: relative; width: 260px; height: 260px; margin: 20px auto; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .weather-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 56px; font-weight: 700; color: #f1f3f4; letter-spacing: -2px; user-select: none; }
+        .weather-item { position: absolute; top: 50%; left: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transform: translate(-50%, -50%) rotate(calc(var(--i) * 45deg)) translate(105px) rotate(calc(var(--i) * -45deg)); user-select: none; }
+        .weather-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
+        .weather-fallback { display: none; font-size: 32px; }
+        .location-info { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 24px; color: #bdc1c6; font-size: 14px; font-weight: 500; }
+
+        /* ===== Slider Styles (Mail Modal) ===== */
+        .mail-modal { max-width: 600px; }
+        .slider-container { position: relative; width: 100%; background: #f8f9fa; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 300px; }
+        .slider-track { display: flex; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); width: 100%; }
+        .slide { min-width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        /* Ключевое свойство для картинок разной высоты: */
+        .slide img { max-width: 100%; max-height: 50vh; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: 1px solid #dadce0; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 18px; color: #333; z-index: 10; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .slider-btn:hover { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15); color: #1a73e8; }
+        .prev-btn { left: 12px; }
+        .next-btn { right: 12px; }
+        
+        .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #dadce0; cursor: pointer; transition: 0.2s; }
+        .dot.active { background: #1a73e8; transform: scale(1.2); }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .header { padding: 2% 3%; gap: 8px; }
+            .header_link { font-size: 13px; }
+            .header-icon { width: 32px; height: 32px; }
+            .header-icon svg { width: 18px; height: 18px; }
+            .help-icon { font-size: 18px; }
+            .search-box { width: 90%; }
+            .search-icon { width: 20px; height: 20px; }
+            .button { padding: 8px 16px; font-size: 13px; }
+            .modal { width: 95%; }
+            .weather-wheel { width: 220px; height: 220px; }
+            .weather-center { font-size: 44px; }
+            .weather-item { width: 40px; height: 40px; transform: translate(-50%, -50%) rotate(calc(var(--i) * 45deg)) translate(85px) rotate(calc(var(--i) * -45deg)); }
+            .slide img { max-height: 40vh; }
+        }
+    </style>
+</head>
 <body>
     <header class="header">
-        <a href="#" class="header_link">Почта</a>
-        <a href="#" class="header_link">Картинки</a>
-        <div class="menu">
-            <image class="header__img" src="https://ssl.gstatic.com/gb/images/bar/al-icon.png" alt="" height="24"
-                width="24" style="border:none;display:none \9"></image>
+        <a href="#" class="header_link" id="mailLink">Почта</a>
+        <div class="header-icon weather-icon" id="weatherIcon" title="Погода">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
         </div>
-        <a href="#" class="headder_btn">Войти</a>
+        <div class="header-icon help-icon" id="helpIcon" title="Помощь">?</div>
     </header>
 
+    <!-- Модальное окно: Инструкция -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-img"><img src="main-img/modal-title.png" alt="" onerror="this.style.display='none'"></div>
+            <div class="modal-header">
+                <h2><strong>А что делать?</strong></h2>
+                <button class="modal-close-btn" data-modal="modalOverlay">&times;</button>
+            </div>
+            <div class="modal-content">
+                <h3>Сейчас перед вами откроется поисковик. Введите названия работ или "карта" для маршрута.</h3>
+                <h3 style="font-style: italic; color: #1a73e8;">Совет: тыкайте на иконки, чтобы найти пасхалки.</h3>
+            </div>
+            <button class="modal-btn" data-modal="modalOverlay">OK!</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Погода -->
+    <div class="modal-overlay" id="weatherModalOverlay">
+        <div class="modal weather-modal-dark">
+            <div class="modal-img"><img src="main-img/weather-title.png" alt="" onerror="this.style.display='none'"></div>
+            <div class="modal-header">
+                <h2><strong>хз, мы на Урале, че ты хочешь</strong></h2>
+                <button class="modal-close-btn" data-modal="weatherModalOverlay">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="weather-wheel">
+                    <div class="weather-center">?°</div>
+                    <div class="weather-item" style="--i:0"><img src="https://raw.githubusercontent.com/manuelmeister/samsung-weather-icons/main/svg/sunny.svg" class="weather-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span class="weather-fallback">☀️</span></div>
+                    <div class="weather-item" style="--i:1"><img src="https://raw.githubusercontent.com/manuelmeister/samsung-weather-icons/main/svg/partly_cloudy.svg" class="weather-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span class="weather-fallback">⛅</span></div>
+                    <div class="weather-item" style="--i:2"><img src="https://raw.githubusercontent.com/manuelmeister/samsung-weather-icons/main/svg/cloudy.svg" class="weather-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span class="weather-fallback">☁️</span></div>
+                    <div class="weather-item" style="--i:3"><img src="https://raw.githubusercontent.com/manuelmeister/samsung-weather-icons/main/svg/rain.svg" class="weather-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span class="weather-fallback">🌧️</span></div>
+                    <div class="weather-item" style="--i:4"><img src="https://raw.githubusercontent.com/manuelmeister/samsung-weather-icons/main/svg/thunderstorm.svg" class="weather-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span class="weather-fallback">⛈️</span></div>
+                    <div class="weather-item" style="--i:5"><img src="https://raw.githubusercontent.com/manuelmeister/samsung-weather-icons/main/svg/snow.svg" class="weather-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span class="weather-fallback">❄️</span></div>
+                    <div class="weather-item" style="--i:6"><img src="https://raw.githubusercontent.com/manuelmeister/samsung-weather-icons/main/svg/wind.svg" class="weather-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span class="weather-fallback">🌬️</span></div>
+                    <div class="weather-item" style="--i:7"><img src="https://raw.githubusercontent.com/manuelmeister/samsung-weather-icons/main/svg/fog.svg" class="weather-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span class="weather-fallback">🌫️</span></div>
+                </div>
+                <div class="location-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Город бесов
+                </div>
+            </div>
+            <button class="modal-btn" data-modal="weatherModalOverlay">Понял, принял(</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Почта (Слайдер) -->
+    <div class="modal-overlay" id="mailModalOverlay">
+        <div class="modal mail-modal">
+            <div class="modal-header">
+                <h2><strong>Бэкстейдж</strong></h2>
+                <button class="modal-close-btn" data-modal="mailModalOverlay">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="slider-container">
+                    <button class="slider-btn prev-btn" id="prevSlide">&#10094;</button>
+                    <div class="slider-track" id="sliderTrack">
+                        <!-- Слайды генерируются через JS -->
+                    </div>
+                    <button class="slider-btn next-btn" id="nextSlide">&#10095;</button>
+                </div>
+                <div class="slider-dots" id="sliderDots"></div>
+            </div>
+        </div>
+    </div>
+
     <main>
-        
         <h1 class="logo">
-    <span style="color: #4285F4;">П</span><span style="color: #EA4335;">о</span><span style="color: #FBBC05;">и</span><span style="color: #4285F4;">с</span><span style="color: #34A853;">к</span>
-</h1>
+            <span style="color: #4285F4;">П</span><span style="color: #EA4335;">о</span><span style="color: #FBBC05;">и</span><span style="color: #4285F4;">с</span><span style="color: #34A853;">к</span>
+        </h1>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Поиск по сайту..." autocomplete="off">
-            <svg class="search-icon" id="searchIcon" focusable="false" xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24">
-                <path
-                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-                </path>
-            </svg>
+            <svg class="search-icon" id="searchIcon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             <div class="search-results" id="searchResults"></div>
         </div>
-
         <div class="buttons">
-            <button>Поиск в Google</button>
-            <button>Мне повезёт!</button>
+            <a href="pages/karta/karta.html" class="button">Маршрут уже на <strong>карте</strong></a>
         </div>
     </main>
 
-    <style>
-        * {
-            border: none;
-            outline: none;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        :root {
-    color-scheme: light only;
-}
-        body {
-    background: #ffffff;
-    color: #202124;
-    font-family: Arial, sans-serif;
-}
-
-        header {
-            top: 0;
-            font-family: Arial, sans-serif;
-            width: 100%;
-            height: 10vh;
-            display: flex;
-            gap: 1%;
-            align-items: center;
-            justify-content: end;
-            padding: 2% 4%;
-        }
-
-        .logo {
-    font-family: Arial, sans-serif;
-    font-size: clamp(50px, 9vw, 100px);
-    font-weight: 700;
-    letter-spacing: -2px;
-    margin-bottom: 20px;
-    user-select: none;
-    display: flex;
-    align-items: baseline;
-}
-
-.logo span {
-    display: inline-block;
-    transition: transform 0.3s ease;
-}
-
-.logo span:hover {
-    transform: translateY(-8px) scale(1.1);
-}
-
-
-        a {
-            text-decoration: none;
-            color: #383838;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .headder_btn {
-            background-color: #0b57d0;
-            color: white;
-            padding: 1% 1.7%;
-            border-radius: 30px;
-        }
-
-        .headder_btn:hover {
-            text-decoration: none;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .3), 0 1px 3px 1px rgba(0, 0, 0, .15);
-        }
-
-        main {
-            font-family: Arial, sans-serif;
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .search-box {
-          
-            width: 45vw;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #ccc;
-            border-radius: 24px;
-            padding: 10px 16px;
-            box-shadow: 0 1px 6px rgba(32, 33, 36, .28);
-            position: relative;
-        }
-
-        .search-box input {
-            flex: 1;
-            font-size: 16px;
-            padding: 8px 0;
-        }
-
-        .search-icon {
-            width: 24px;
-            height: 24px;
-            fill: #6c6c6c;
-            cursor: pointer;
-        }
-
-        .search-icon:hover {
-            fill: #4285f4;
-        }
-
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            margin-top: 4px;
-        }
-
-        .result-item {
-            padding: 12px 16px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .result-item:hover {
-            background: #f0f0f0;
-        }
-
-        .no-results {
-            padding: 12px 16px;
-            color: #999;
-            font-size: 14px;
-        }
-
-        .buttons {
-            margin-top: 24px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .buttons button {
-            padding: 10px 20px;
-            font-size: 14px;
-            border: none;
-            border-radius: 4px;
-            background-color: #f8f9fa;
-            cursor: pointer;
-        }
-
-        .buttons button:hover {
-            background-color: #e8e8e8;
-        }
-
-        @media (max-width: 600px) {
-            .search-box {
-                width: 90vw;
-                
-               
-            }
-
-            .search-icon {
-                width: 20px;
-                height: 20px;
-            }
-
-            .buttons button {
-                padding: 8px 16px;
-                font-size: 13px;
-            }
-        }
-    </style>
-
     <script>
-       const pages = [
-    { name: 'Карта', url: 'pages/karta/karta.html', keywords: ['карта', 'самокат'] },
-    { name: 'КВН', url: 'pages/kvn/kvn.html', keywords: ['квн'] },
-    { name: 'Договор', url: 'pages/dogovor/dogovor.html', keywords: ['договор'] },
-    { name: 'Криминал', url: 'pages/kriminal/kriminal.html', keywords: ['криминал', 'новости'] },
-    { name: 'Змейка', url: 'pages/zmeika/zmeika.html', keywords: ['змейка', 'игра', 'snake'] },
-    { name: 'Словарь', url: 'pages/slovar/slovar.html', keywords: ['словарь', 'слова'] }
-];
+        // ===== ДАННЫЕ =====
+        const pages = [
+            { name: 'Карта', url: 'pages/karta/karta.html', keywords: ['карта', 'самокат'] },
+            { name: 'КВН', url: 'pages/kvn/kvn.html', keywords: ['квн'] },
+            { name: 'Договор', url: 'pages/dogovor/dogovor.html', keywords: ['договор'] },
+            { name: 'Криминал', url: 'pages/kriminal/kriminal.html', keywords: ['криминал', 'новости'] },
+            { name: 'Змейка', url: 'pages/zmeika/zmeika.html', keywords: ['змейка', 'игра', 'snake'] },
+            { name: 'Словарь', url: 'pages/slovar/slovar.html', keywords: ['словарь', 'слова'] }
+        ];
 
-const searchInput = document.getElementById('searchInput');
-const resultsDiv = document.getElementById('searchResults');
-const searchIcon = document.getElementById('searchIcon');
+        // Картинки разной высоты для слайдера (используем picsum для демо)
+        const mailImages = [
+            { src: 'main-img/slider/s1.jpg', alt: 'image' },
+            { src: 'main-img/slider/s2.jpg', alt: 'image' },
+            { src: 'main-img/slider/s3.jpg', alt: 'image' },
+            { src: 'main-img/slider/s4.jpg', alt: 'image' },
+            { src: 'main-img/slider/s5.jpg', alt: 'image' }
+        ];
 
-// ===== Универсальная функция показа результатов =====
-function showResults(query = '') {
-    const lowerQuery = query.toLowerCase().trim();
+        // ===== ПОИСК =====
+        const searchInput = document.getElementById('searchInput');
+        const resultsDiv = document.getElementById('searchResults');
 
-    // Если запрос пустой — показываем все страницы
-    let matches;
-    if (lowerQuery === '') {
-        matches = pages;
-    } else {
-        matches = pages.filter(page =>
-            page.name.toLowerCase().includes(lowerQuery) ||
-            page.keywords.some(kw => kw.includes(lowerQuery))
-        );
-    }
-
-    if (matches.length > 0) {
-        resultsDiv.innerHTML = matches.map(page =>
-            `<div class="result-item" data-url="${page.url}">${page.name}</div>`
-        ).join('');
-        resultsDiv.style.display = 'block';
-
-        // Вешаем обработчики клика на каждый элемент
-        document.querySelectorAll('.result-item').forEach(item => {
-            item.addEventListener('click', () => {
-                window.location.href = item.dataset.url;
-            });
+        resultsDiv.addEventListener('click', (e) => {
+            const item = e.target.closest('.result-item');
+            if (item) window.location.href = item.dataset.url;
         });
-    } else {
-        resultsDiv.innerHTML = '<div class="no-results">Ничего не найдено</div>';
-        resultsDiv.style.display = 'block';
-    }
-}
 
-// ===== Функция поиска страницы по точному совпадению =====
-function findPageByQuery(query) {
-    const lowerQuery = query.toLowerCase().trim();
-    if (lowerQuery === '') return null;
+        function showResults(query = '') {
+            const q = query.toLowerCase().trim();
+            const matches = q === '' ? pages : pages.filter(p => p.name.toLowerCase().includes(q) || p.keywords.some(k => k.includes(q)));
+            resultsDiv.innerHTML = matches.length 
+                ? matches.map(p => `<div class="result-item" data-url="${p.url}">${p.name}</div>`).join('')
+                : '<div class="no-results">Ничего не найдено</div>';
+            resultsDiv.style.display = 'block';
+        }
 
-    return pages.find(page =>
-        page.name.toLowerCase() === lowerQuery ||
-        page.keywords.some(kw => kw === lowerQuery) ||
-        page.name.toLowerCase().includes(lowerQuery) ||
-        page.keywords.some(kw => kw.includes(lowerQuery))
-    );
-}
+        function searchAndNavigate() {
+            const q = searchInput.value.toLowerCase().trim();
+            if (!q) return;
+            const page = pages.find(p => p.name.toLowerCase() === q || p.keywords.some(k => k === q) || p.name.toLowerCase().includes(q) || p.keywords.some(k => k.includes(q)));
+            page ? window.location.href = page.url : alert('Не найдено. Попробуйте: КВН, Словарь, Карта, Криминал, Договор, Змейка');
+        }
 
-function navigateToPage(page) {
-    if (page) {
-        window.location.href = page.url;
-    }
-}
+        document.getElementById('searchIcon').addEventListener('click', searchAndNavigate);
+        searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); searchAndNavigate(); } });
+        searchInput.addEventListener('focus', () => showResults(searchInput.value));
+        searchInput.addEventListener('input', e => showResults(e.target.value));
+        document.addEventListener('click', e => { if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) resultsDiv.style.display = 'none'; });
 
-function searchAndNavigate() {
-    const query = searchInput.value;
-    const matchedPage = findPageByQuery(query);
+        // ===== МОДАЛЬНЫЕ ОКНА (Универсальная функция) =====
+        const modals = {};
+        function setupModal(overlayId, isMain = false) {
+            const overlay = document.getElementById(overlayId);
+            const show = () => { overlay.classList.add('active'); document.body.style.overflow = 'hidden'; };
+            const hide = () => { overlay.classList.remove('active'); document.body.style.overflow = ''; if (isMain) localStorage.setItem('hasSeenModal', 'true'); };
+            
+            // Закрытие по кнопкам и крестикам внутри этого модала
+            overlay.querySelectorAll(`[data-modal="${overlayId}"]`).forEach(el => el.addEventListener('click', hide));
+            // Закрытие по клику на фон
+            overlay.addEventListener('click', e => { if (e.target === overlay) hide(); });
+            
+            modals[overlayId] = { overlay, show, hide };
+            return { show, hide };
+        }
 
-    if (matchedPage) {
-        navigateToPage(matchedPage);
-    } else if (query.trim() !== '') {
-        alert('Страница не найдена. Попробуйте: КВН, Словарь, Карта, Криминал, Договор, Змейка');
-    }
-}
+        setupModal('modalOverlay', true);
+        setupModal('weatherModalOverlay');
+        setupModal('mailModalOverlay');
 
-// ===== Клик по иконке поиска =====
-searchIcon.addEventListener('click', searchAndNavigate);
+        // Открытие по иконкам
+        document.getElementById('helpIcon').addEventListener('click', () => modals['modalOverlay'].show());
+        document.getElementById('weatherIcon').addEventListener('click', () => modals['weatherModalOverlay'].show());
+        
+        // Открытие почты
+        document.getElementById('mailLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            modals['mailModalOverlay'].show();
+        });
 
-// ===== Enter в поле ввода =====
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        searchAndNavigate();
-    }
-});
+        // Показать главное модальное окно при первом входе
+        window.addEventListener('load', () => {
+            if (!localStorage.getItem('hasSeenModal')) setTimeout(() => modals['modalOverlay'].show(), 500);
+        });
 
-// ===== КЛИК ПО СТРОКЕ ПОИСКА → показ всех ссылок =====
-searchInput.addEventListener('focus', () => {
-    showResults(searchInput.value);
-});
+        // Закрытие любого модального окна по Escape
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                Object.values(modals).forEach(m => {
+                    if (m.overlay.classList.contains('active')) m.hide();
+                });
+            }
+        });
 
-// ===== Фильтрация при вводе текста =====
-searchInput.addEventListener('input', (e) => {
-    showResults(e.target.value);
-});
+        // ===== СЛАЙДЕР ДЛЯ ПОЧТЫ =====
+        let currentSlide = 0;
+        const sliderTrack = document.getElementById('sliderTrack');
+        const sliderDots = document.getElementById('sliderDots');
 
-// ===== Закрыть результаты при клике вне =====
-document.addEventListener('click', (e) => {
-    if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
-        resultsDiv.style.display = 'none';
-    }
-});
+        // Инициализация слайдов
+        mailImages.forEach((img, index) => {
+            // Создаем слайд
+            const slide = document.createElement('div');
+            slide.className = 'slide';
+            slide.innerHTML = `<img src="${img.src}" alt="${img.alt}" loading="lazy">`;
+            sliderTrack.appendChild(slide);
+
+            // Создаем точку
+            const dot = document.createElement('div');
+            dot.className = `dot ${index === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => goToSlide(index));
+            sliderDots.appendChild(dot);
+        });
+
+        function updateSlider() {
+            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function goToSlide(index) {
+            if (index < 0) currentSlide = mailImages.length - 1;
+            else if (index >= mailImages.length) currentSlide = 0;
+            else currentSlide = index;
+            updateSlider();
+        }
+
+        document.getElementById('prevSlide').addEventListener('click', () => goToSlide(currentSlide - 1));
+        document.getElementById('nextSlide').addEventListener('click', () => goToSlide(currentSlide + 1));
+
+        // Управление слайдером с клавиатуры (стрелки), но только если открыто окно почты
+        document.addEventListener('keydown', e => {
+            if (modals['mailModalOverlay'].overlay.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+                if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+            }
+        });
     </script>
 </body>
-
 </html>

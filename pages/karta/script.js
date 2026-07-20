@@ -14,17 +14,36 @@ document.querySelector('.start-btn').addEventListener('click', (e) => {
     window.location.href = 'second.html';
 });
 
-// ===== Переключение транспорта =====
-const transportBtns = document.querySelectorAll('.transport-btn');
 
-transportBtns.forEach(btn => {
+const transportBtns = document.querySelectorAll('.transport-btn');
+const promoBadge = document.querySelector('.promo-badge');
+const promoTitle = document.querySelector('.promo-title');
+
+const transportMessages = {
+    0: { title: 'казнить нельзя помиловать'},
+    1: { title: 'колись где бенз взял?'},
+    2: { title: 'помолимся за свободное место' },
+    3: { title: 'хорошей прогулки' },
+    4: { title: 'хорошей прогулки' }
+};
+
+function updatePromoBadge(index) {
+    const message = transportMessages[index];
+    promoTitle.textContent = message.title;
+}
+
+transportBtns.forEach((btn, index) => {
     btn.addEventListener('click', () => {
         transportBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        updatePromoBadge(index);
     });
 });
 
-// ===== Зум карты =====
+const activeIndex = Array.from(transportBtns).findIndex(btn => btn.classList.contains('active'));
+updatePromoBadge(activeIndex !== -1 ? activeIndex : 0);
+
+
 const mapContainer = document.getElementById('mapContainer');
 const mapWidget = document.getElementById('mapWidget');
 

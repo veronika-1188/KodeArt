@@ -127,16 +127,13 @@ body {
 }
 
 .promo-title {
-    font-size: 10px;
+    font-size: 17px;
     font-weight: 700;
     color: #4ade80;
     letter-spacing: 0.5px;
+    text-align: center;
 }
 
-.promo-sub {
-    font-size: 11px;
-    color: #b0b8c0;
-}
 
 .top-icons {
     display: flex;
@@ -333,9 +330,14 @@ body {
     .promo-badge {
         order: 2;
         margin-top: 10px;
-        width: 100%;
+        width: 90%;
         justify-content: center;
     }
+    .promo-title {
+    font-size: 12px;
+    font-weight: 600;
+}
+
 
     .time-big {
         font-size: 18px;
