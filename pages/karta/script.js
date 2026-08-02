@@ -155,3 +155,18 @@ mapContainer.addEventListener('dblclick', () => {
     if (scale > 1) resetTransform();
     else { scale = 2.5; applyTransform(); }
 });
+
+// Показывать/скрывать анимацию при зумировании
+mapContainer.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
+    scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale + delta));
+    if (scale === 1) { 
+        posX = 0; 
+        posY = 0; 
+        mapContainer.classList.remove('zoomed');
+    } else {
+        mapContainer.classList.add('zoomed');
+    }
+    applyTransform();
+}, { passive: false });
