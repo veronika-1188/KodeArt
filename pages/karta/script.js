@@ -18,6 +18,16 @@ document.querySelector('.start-btn').addEventListener('click', (e) => {
 const transportBtns = document.querySelectorAll('.transport-btn');
 const promoBadge = document.querySelector('.promo-badge');
 const promoTitle = document.querySelector('.promo-title');
+const timeElement = document.querySelector('.time-big');
+
+// Время в пути для разных видов транспорта
+const transportTimes = {
+    0: '44 мин',        // самокат
+    1: '32 мин',        // авто
+    2: '45 мин',        // автобус  
+    3: '40 мин',        // велосипед
+    4: '1 ч 46 мин'     // пешком
+};
 
 const transportMessages = {
     0: { title: 'казнить нельзя помиловать'},
@@ -32,16 +42,22 @@ function updatePromoBadge(index) {
     promoTitle.textContent = message.title;
 }
 
+function updateTime(index) {
+    timeElement.textContent = transportTimes[index];
+}
+
 transportBtns.forEach((btn, index) => {
     btn.addEventListener('click', () => {
         transportBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         updatePromoBadge(index);
+        updateTime(index);
     });
 });
 
 const activeIndex = Array.from(transportBtns).findIndex(btn => btn.classList.contains('active'));
 updatePromoBadge(activeIndex !== -1 ? activeIndex : 0);
+updateTime(activeIndex !== -1 ? activeIndex : 0);
 
 
 const mapContainer = document.getElementById('mapContainer');
@@ -70,7 +86,13 @@ mapContainer.addEventListener('wheel', (e) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
     scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale + delta));
-    if (scale === 1) { posX = 0; posY = 0; }
+    if (scale === 1) { 
+        posX = 0; 
+        posY = 0; 
+        mapContainer.classList.remove('zoomed');
+    } else {
+        mapContainer.classList.add('zoomed');
+    }
     applyTransform();
 }, { passive: false });
 
@@ -155,18 +177,3 @@ mapContainer.addEventListener('dblclick', () => {
     if (scale > 1) resetTransform();
     else { scale = 2.5; applyTransform(); }
 });
-
-// Показывать/скрывать анимацию при зумировании
-mapContainer.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
-    scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale + delta));
-    if (scale === 1) { 
-        posX = 0; 
-        posY = 0; 
-        mapContainer.classList.remove('zoomed');
-    } else {
-        mapContainer.classList.add('zoomed');
-    }
-    applyTransform();
-}, { passive: false });
