@@ -22,50 +22,43 @@
     </div>
 
     <script>
-        const pattern = document.getElementById('pattern');
-        const btn     = document.getElementById('tykBtn');
-        const content = document.getElementById('content');
-        const image   = document.getElementById('contentImage');
+       /* ---- настройки паттерна ---- */
+const DESKTOP_TILE = 100; // размер плитки на десктопе
+const MOBILE_COLS  = 4;   // сколько картинок в ширину на мобилке
+const MOBILE_W     = 600; // ширина, ниже которой считаем мобилкой
+const GAP          = 12;  // отступ между плитками
+/* ----------------------------- */
 
-        /* ---- настройки паттерна ---- */
-        const TILE = 100; // размер плитки
-        const GAP  = 12;  // отступ между плитками
-        /* ----------------------------- */
+function buildPattern() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
 
-        function buildPattern() {
-            pattern.innerHTML = '';
-            pattern.style.gap = GAP + 'px';
-            pattern.style.padding = '4px';
+    let cols, tile;
+    if (w <= MOBILE_W) {
+        // мобилка: ровно 4 картинки в ширину, размер считаем сам
+        cols = MOBILE_COLS;
+        tile = (w - GAP * (cols + 1)) / cols;
+    } else {
+        // десктоп: как раньше
+        tile = DESKTOP_TILE;
+        cols = Math.max(1, Math.ceil((w - GAP) / (tile + GAP)));
+    }
+    const rows = Math.max(1, Math.ceil((h - GAP) / (tile + GAP)));
 
-            const cols = Math.max(1, Math.ceil(window.innerWidth  / (TILE + GAP)));
-            const rows = Math.max(1, Math.ceil(window.innerHeight / (TILE + GAP)));
-            pattern.style.gridTemplateColumns = `repeat(${cols}, ${TILE}px)`;
-            pattern.style.gridTemplateRows    = `repeat(${rows}, ${TILE}px)`;
+    pattern.style.gap = GAP + 'px';
+    pattern.style.padding = GAP + 'px';
+    pattern.style.gridTemplateColumns = `repeat(${cols}, ${tile}px)`;
+    pattern.style.gridTemplateRows    = `repeat(${rows}, ${tile}px)`;
 
-            for (let i = 0; i < cols * rows; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'pattern-cell';
-                pattern.appendChild(cell);
-            }
-        }
-        buildPattern();
-        window.addEventListener('resize', buildPattern);
-
-        /* ---- клик по "Тык!" ---- */
-        btn.addEventListener('click', () => {
-            pattern.classList.add('hidden');
-            btn.classList.add('hidden');
-
-            const show = () => {
-                const nw = image.naturalWidth;
-                const nh = image.naturalHeight;
-                
-                content.classList.add('visible');
-            };
-
-            if (image.complete && image.naturalWidth) show();
-            else image.onload = show;
-        });
+    pattern.innerHTML = '';
+    for (let i = 0; i < cols * rows; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'pattern-cell';
+        pattern.appendChild(cell);
+    }
+}
+buildPattern();
+window.addEventListener('resize', buildPattern);
     </script>
 </body>
 </html>
