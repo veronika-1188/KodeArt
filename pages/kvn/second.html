@@ -22,7 +22,12 @@
     </div>
 
     <script>
-       /* ---- настройки паттерна ---- */
+        const pattern = document.getElementById('pattern');
+        const btn     = document.getElementById('tykBtn');
+        const content = document.getElementById('content');
+        const image   = document.getElementById('contentImage');
+
+   /* ---- настройки паттерна ---- */
 const DESKTOP_TILE = 100; // размер плитки на десктопе
 const MOBILE_COLS  = 4;   // сколько картинок в ширину на мобилке
 const MOBILE_W     = 600; // ширина, ниже которой считаем мобилкой
@@ -59,6 +64,21 @@ function buildPattern() {
 }
 buildPattern();
 window.addEventListener('resize', buildPattern);
+        /* ---- клик по "Тык!" ---- */
+        btn.addEventListener('click', () => {
+            pattern.classList.add('hidden');
+            btn.classList.add('hidden');
+
+            const show = () => {
+                const nw = image.naturalWidth;
+                const nh = image.naturalHeight;
+                
+                content.classList.add('visible');
+            };
+
+            if (image.complete && image.naturalWidth) show();
+            else image.onload = show;
+        });
     </script>
 </body>
 </html>
