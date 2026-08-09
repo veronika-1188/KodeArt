@@ -34,7 +34,7 @@ body {
 }
 
 .pattern-cell {
-    background: url('./bg.svg') center / contain no-repeat;
+   background: url('./bg.svg') center / 60% no-repeat;
     filter: blur(2px);
 }
 
