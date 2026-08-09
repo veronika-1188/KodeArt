@@ -2,9 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
-:root{
+:root {
     --before-display: none;
     color-scheme: light only;
 }
@@ -15,21 +16,22 @@ body {
     justify-content: center;
     height: 100vh;
     background: #303030;
-    padding: 20px; 
+    padding: 20px;
     font-family: 'Times New Roman', Times, serif;
 }
 
-input::placeholder, textarea::placeholder { color: black;
-font-size: 14px; }
+input::placeholder,
+textarea::placeholder {
+    color: black;
+    font-size: 14px;
+}
 
 .dogovor {
     padding: 5%;
     width: 100%;
-    max-width: 800px; 
+    max-width: 800px;
     background: #fff;
     height: 100vh;
-    
-    
 }
 
 .dogovor__container {
@@ -51,14 +53,12 @@ font-size: 14px; }
     padding: 2px 16px;
     box-sizing: border-box;
     max-width: 400px;
-    
     font-size: 14px;
     background: transparent;
-    
     font-family: 'Times New Roman', Times, serif;
 }
 
-.dogovor-text input{
+.dogovor-text input {
     min-width: 250px;
 }
 
@@ -66,7 +66,6 @@ font-size: 14px; }
 .podpis-text input:focus {
     outline: none;
 }
-
 
 .problem {
     width: 98%;
@@ -78,24 +77,24 @@ font-size: 14px; }
     overflow: hidden;
     appearance: none;
     background: transparent;
-    background: linear-gradient(to bottom, 
-    transparent calc(100% - 1px),
-    #000000 calc(100% - 1px),
-    #000000 100%
-  );
-  background-size: 100% 1.5em; /* Высота строки */
-  line-height: 1.5em;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 14px;
+    background: linear-gradient(
+        to bottom,
+        transparent calc(100% - 1px),
+        #000000 calc(100% - 1px),
+        #000000 100%
+    );
+    background-size: 100% 1.5em;
+    line-height: 1.5em;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
 }
-
 
 .bold {
     font-weight: bold;
 }
 
 .podpis__container {
-    text-align: end;/* Изменил на left для мобильных */
+    text-align: end;
     margin-top: 40px;
     padding-top: 20px;
 }
@@ -111,219 +110,36 @@ button {
     display: inline-block;
     margin-top: 5px;
     background: transparent;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 button::before {
-    
     display: var(--before-display);
     content: "";
     background-image: url(shtamp.png);
     background-repeat: no-repeat;
     background-size: contain;
     z-index: 5;
-    transition: .3s;
-    width: 7vw; 
+    transition: 0.3s;
+    width: 7vw;
     height: 7vw;
-    max-width: 200px; 
+    max-width: 200px;
     position: absolute;
     top: -35px;
     left: 0;
     right: 0;
-    margin: 0 auto 10px; 
+    margin: 0 auto 10px;
     opacity: 0.7;
     rotate: 30deg;
 }
 
-
-/* 
-Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-    .signature-image {
-        width: 70%; /* На мобильных делаем чуть больше */
-        max-width: 150px;
-        top: -5px;
-    }
-    button::before {
-    width: 17vw; 
-    height: 17vw;
-    max-width: 200px; 
-    position: absolute;
-    top: -25px;
-    left: 0;
-    right: 0;
-    margin: 0 auto 10px; 
-    opacity: 0.7;
-    rotate: 30deg;
-}
-}
-
-@media (max-width: 480px) {
-    .signature-image {
-        width: 80%;
-        max-width: 120px;
-        top: -3px;
-    }
-
-    
-}
-
-/* Медиа-запросы для адаптивности */
-
-/* Планшеты (от 768px) */
-@media (min-width: 768px) and (max-width: 1200) {
-    body {
-        padding: 40px 20px;
-        align-items: center;
-    }
-    
-    .dogovor {
-        padding: 40px;
-        width: 85%;
-    }
-    
-    .dogovor-text input,
-    .podpis-text input {
-        max-width: 400px;
-    }
-
-    button::before {
-    width: 17vw; 
-    height: 17vw;
-    max-width: 200px; 
-    position: absolute;
-    top: -45px;
-    left: 0;
-    right: 0;
-    margin: 0 auto 10px; 
-    opacity: 0.7;
-    rotate: 30deg;
-    }
-}
-
-/* Ноутбуки и десктопы (от 992px) */
-@media (min-width: 992px) {
-    .dogovor {
-        width: 65%;
-        padding: 50px;
-    }
-    
-    .dogovor-text input,
-    .podpis-text input {
-        max-width: 500px;
-    }
-    
-    body {
-        font-size: 16px;
-    }
-    
-    .dogovor-text input,
-    .podpis-text input,
-    button {
-        font-size: 16px;
-    }
-}
-
-/* Большие экраны (от 1200px) */
-@media (min-width: 1200px) {
-    .dogovor {
-        width: 55%;
-    }
-}
-
-/* Мобильные телефоны (до 480px) */
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    
-    .dogovor {
-        padding: 25px 20px;
-    }
-    
-    .dogovor-text,
-    .podpis-text {
-        margin-top: 12px;
-        font-size: 13px;
-    }
-    
-    .dogovor-text input,
-    .podpis-text input {
-        padding: 6px 4px;
-        font-size: 13px;
-        max-width: 100%;
-    }
-    
-    button {
-        font-size: 13px;
-        padding: 4px 6px;
-    }
-    
-    .dogovor__container {
-        margin-bottom: 20px;
-    }
-
-    button::before{
-        top: -5px;
-        width: 12vw;
-        height: 12vw;
-    }
-
-    button::before {
-    width: 17vw; 
-    height: 17vw;
-    max-width: 200px; 
-    position: absolute;
-    top: -10px;
-    left: 0;
-    right: 0;
-    margin: 0 auto 10px; 
-    opacity: 0.7;
-    rotate: 30deg;
-}
-
-}
-
-/* Очень маленькие экраны */
-@media (max-width: 360px) {
-    .dogovor {
-        padding: 20px 15px;
-    }
-    
-    .dogovor-text,
-    .podpis-text {
-        font-size: 12px;
-    }
-    
-    .dogovor-text input,
-    .podpis-text input,
-    button {
-        font-size: 12px;
-    }
-}
-
-/* Горизонтальная ориентация на мобильных */
-@media (max-height: 600px) and (orientation: landscape) {
-    body {
-        
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-    
-    .dogovor {
-        min-height: auto;
-        padding: 30px;
-    }
-}
-
-.result__text{
+.result__text {
     text-align: center;
     margin-top: 15vh;
     display: none;
 }
 
-
-/* Модальное окно */
+/* ===== Модальное окно ===== */
 .modal {
     display: none;
     position: fixed;
@@ -369,13 +185,16 @@ button::before {
     transition: background-color 0.3s ease;
 }
 
-.modal__btn:hover {
-    background-color: #272727;
+/* ===== Hover только для мыши, на мобилке не залипает ===== */
+@media (hover: hover) and (pointer: fine) {
+    .modal__btn:hover {
+        background-color: #272727;
+    }
 }
 
 @keyframes fadeIn {
     from { opacity: 0; }
-    to { opacity: 1; }
+    to   { opacity: 1; }
 }
 
 @keyframes slideIn {
@@ -386,5 +205,147 @@ button::before {
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+/* ===== Адаптивность ===== */
+@media (max-width: 768px) {
+    .signature-image {
+        width: 70%;
+        max-width: 150px;
+        top: -5px;
+    }
+
+    button::before {
+        width: 17vw;
+        height: 17vw;
+        max-width: 200px;
+        top: -25px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    body {
+        padding: 40px 20px;
+        align-items: center;
+    }
+
+    .dogovor {
+        padding: 40px;
+        width: 85%;
+    }
+
+    .dogovor-text input,
+    .podpis-text input {
+        max-width: 400px;
+    }
+
+    button::before {
+        width: 17vw;
+        height: 17vw;
+        max-width: 200px;
+        top: -45px;
+    }
+}
+
+@media (min-width: 992px) {
+    .dogovor {
+        width: 65%;
+        padding: 50px;
+    }
+
+    body {
+        font-size: 16px;
+    }
+
+    .dogovor-text input,
+    .podpis-text input,
+    button {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .dogovor {
+        width: 55%;
+    }
+
+    .dogovor-text input,
+    .podpis-text input {
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .dogovor {
+        padding: 25px 20px;
+    }
+
+    .dogovor-text,
+    .podpis-text {
+        margin-top: 12px;
+        font-size: 13px;
+    }
+
+    .dogovor-text input,
+    .podpis-text input {
+        padding: 6px 4px;
+        font-size: 13px;
+        max-width: 100%;
+    }
+
+    button {
+        font-size: 13px;
+        padding: 4px 6px;
+    }
+
+    .dogovor__container {
+        margin-bottom: 20px;
+    }
+
+    .signature-image {
+        width: 80%;
+        max-width: 120px;
+        top: -3px;
+    }
+
+    button::before {
+        width: 17vw;
+        height: 17vw;
+        max-width: 200px;
+        top: -10px;
+    }
+}
+
+@media (max-width: 360px) {
+    .dogovor {
+        padding: 20px 15px;
+    }
+
+    .dogovor-text,
+    .podpis-text {
+        font-size: 12px;
+    }
+
+    .dogovor-text input,
+    .podpis-text input,
+    button {
+        font-size: 12px;
+    }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+    body {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .dogovor {
+        min-height: auto;
+        padding: 30px;
     }
 }

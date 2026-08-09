@@ -1,49 +1,132 @@
- body {
-            background-image: url(фон.jpg);
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-            margin: 0;
-            min-height: 100vh;
-        }
-        :root {
-    color-scheme: light only;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
-        .second_text {
-            color: black;
-            text-align: center;
-            margin-top: 50vh;
-            font-size: clamp(20px, 1vw + 1rem, 35px);
-            font-weight: 600;
-            background: white;
-        }
+:root {
+    color-scheme: light only;
+    --bg: #2b3036;
+    --green: #22d422;
+    --white: #e6e6e6;
+}
 
-        .blur-overlay {
-            position: fixed;
-            inset: 0;                
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            cursor: pointer;
-            opacity: 1;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-            visibility: visible;
-        }
+body {
+    min-height: 100vh;
+    font-family: 'Press Start 2P', monospace;
+    background: var(--bg);
+    overflow: hidden;
+}
 
-        .blur-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+/* ---------- Паттерн с отступами и блюром ---------- */
+.pattern {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    transition: opacity 0.5s ease;
+}
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50%      { opacity: 1;   transform: scale(1.05); }
-        }
+.pattern.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.pattern-cell {
+    background: url('./bg.svg') center / contain no-repeat;
+    filter: blur(2px);
+}
+
+/* ---------- Кнопка "Тык!" ---------- */
+.tyk-btn {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: min(64vw, 420px);
+    padding: 20px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    background: rgba(34, 212, 34, 0.1);
+    border: 3px solid #0bed0b;
+    cursor: pointer;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+
+.tyk-btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ---------- Экран после клика ---------- */
+
+
+.content.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+.content {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* больше не space-between */
+    padding: 28px 16px 60px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.content-title {
+    color: var(--white);
+    font-size: 20px;
+    letter-spacing: 2px;
+    font-weight: 400;
+}
+
+.content-image {
+    margin-top: 15vh;
+    width: min(94vw, 700px);
+    height: auto;
+    max-height: 45vh;
+    object-fit: contain;
+}
+
+.content-text {
+    margin-top: 10vh;            /* прижимает текст+кнопку к низу */
+    color: var(--white);
+    font-size: clamp(14px, 4.5vw, 22px);
+    line-height: 1.9;
+    text-align: center;
+    max-width: 90vw;
+}
+
+.leave-btn {
+    margin-top: 28px;            /* маленький отступ — текст и кнопка рядышком */
+    display: block;
+    width: min(76vw, 460px);
+    padding: 18px 0;
+    text-align: center;
+    text-decoration: none;
+    color: var(--white);
+    font-size: 14px;
+    border: 3px solid var(--green);
+    background: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .tyk-btn:hover   { background: rgba(34, 212, 34, 0.45); }
+    .tyk-btn:active  { transform: translate(-50%, -50%) scale(0.97); }
+    .leave-btn:hover { background: rgba(34, 212, 34, 0.10); }
+    .leave-btn:active { background: rgba(34, 212, 34, 0.15); }
+}

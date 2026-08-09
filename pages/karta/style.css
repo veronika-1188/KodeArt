@@ -10,7 +10,6 @@
     --grey: #7B9794;
     --orange: #EA8B37;
     --white: #F4F2F2;
-
     color-scheme: light only;
 }
 
@@ -36,9 +35,7 @@ body {
     justify-content: center;
 }
 
-.map-container.grabbing {
-    cursor: grabbing;
-}
+.map-container.grabbing { cursor: grabbing; }
 
 .map-widget {
     height: 100%;
@@ -57,7 +54,6 @@ body {
     padding: 16px 20px;
     background: #303734;
     transition: all 0.3s ease;
-
 }
 
 .route-points {
@@ -76,10 +72,6 @@ body {
     user-select: none;
     padding: 4px 0;
     transition: color 0.2s;
-}
-
-.point:hover {
-    color: var(--green);
 }
 
 .star {
@@ -104,7 +96,7 @@ body {
 }
 
 .promo-badge {
-    text-align: c;
+    text-align: center;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -135,7 +127,6 @@ body {
     text-align: center;
 }
 
-
 .top-icons {
     display: flex;
     gap: 8px;
@@ -156,10 +147,6 @@ body {
 .icon-btn > img {
     width: 20px;
     height: 20px;
-}
-
-.icon-btn:hover {
-    background: #3d4449;
 }
 
 .expanded-view {
@@ -196,9 +183,7 @@ body {
     color: var(--grey);
 }
 
-.route-list-text {
-    flex: 1;
-}
+.route-list-text { flex: 1; }
 
 .route-card {
     margin: 0 16px;
@@ -248,10 +233,6 @@ body {
     cursor: pointer;
     transition: background 0.2s;
     text-decoration: none;
-}
-
-.start-btn:hover {
-    background: #ea6a10;
 }
 
 .chart {
@@ -310,10 +291,6 @@ body {
     height: 30px;
 }
 
-.transport-btn:hover {
-    background: #414E4D;
-}
-
 .transport-btn.active {
     background: #414E4D;
     border: 1px solid var(--green);
@@ -325,9 +302,7 @@ body {
         align-items: flex-end;
     }
 
-    .top-icons {
-        order: 1;
-    }
+    .top-icons { order: 1; }
 
     .promo-badge {
         order: 2;
@@ -335,15 +310,13 @@ body {
         width: 90%;
         justify-content: center;
     }
+
     .promo-title {
-    font-size: 10px;
-    font-weight: 600;
-}
-
-
-    .time-big {
-        font-size: 18px;
+        font-size: 10px;
+        font-weight: 600;
     }
+
+    .time-big { font-size: 18px; }
 
     .start-btn {
         padding: 10px 16px;
@@ -351,13 +324,10 @@ body {
     }
 
     .map-container {
-    width: 100%;
-    aspect-ratio: 1/1;
-    height: auto;
-   
-}
-
-
+        width: 100%;
+        aspect-ratio: 1/1;
+        height: auto;
+    }
 }
 
 .scooter-animation {
@@ -379,29 +349,27 @@ body {
 }
 
 @keyframes moveScooter {
-    0% {
-        left: -120px;
-        transform: scaleX(1);
-    }
-    45% {
-        left: calc(100% + 20px);
-        transform: scaleX(1);
-    }
-    50% {
-        left: calc(100% + 20px);
-        transform: scaleX(-1);
-    }
-    95% {
-        left: -120px;
-        transform: scaleX(-1);
-    }
-    100% {
-        left: -120px;
-        transform: scaleX(1);
-    }
+    0%   { left: -120px;              transform: scaleX(1); }
+    45%  { left: calc(100% + 20px);   transform: scaleX(1); }
+    50%  { left: calc(100% + 20px);   transform: scaleX(-1); }
+    95%  { left: -120px;              transform: scaleX(-1); }
+    100% { left: -120px;              transform: scaleX(1); }
 }
 
-/* При зумировании карты скрываем анимацию */
 .map-container.zoomed .scooter-animation {
     display: none;
 }
+
+/* Hover только там, где есть мышь */
+@media (hover: hover) {
+    .point:hover        { color: var(--green); }
+    .icon-btn:hover     { background: #3d4449; }
+    .start-btn:hover    { background: #ea6a10; }
+    .transport-btn:hover { background: #414E4D; }
+}
+
+/* Отклик на нажатие на тач-устройствах */
+.point:active         { color: var(--green); }
+.icon-btn:active      { background: #3d4449; }
+.start-btn:active     { background: #ea6a10; }
+.transport-btn:active { background: #414E4D; }
